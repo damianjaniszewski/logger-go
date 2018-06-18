@@ -7,7 +7,7 @@ To deploy this application, execute the following commands:
   1. Get logger-go sources:
 
 ```
-$ go get github.com/damian-janiszewski/logger-go
+$ go get github.com/damianjaniszewski/logger-go
 ```
 
   2. Set environment variables before using
