@@ -39,23 +39,6 @@ func init() {
 		logToSlack = true
 
 		slackAPI = slack.New(apiToken)
-		slackParams = slack.PostMessageParameters{}
-		// attachment := slack.Attachment{
-		// 	Pretext: "some pretext",
-		// 	Text:    "some text",
-		// 	// Uncomment the following part to send a field too
-		// 	/*
-		// 		Fields: []slack.AttachmentField{
-		// 			slack.AttachmentField{
-		// 				Title: "a",
-		// 				Value: "no",
-		// 			},
-		// 		},
-		// 	*/
-		// }
-		// params.Attachments = []slack.Attachment{attachment}
-		slackParams.AsUser = true
-		slackParams.Username = "logger"
 	}
 }
 
@@ -104,7 +87,7 @@ func Log(module string, level string, format string, v ...interface{}) {
 func LogToSlack(module string, level string, format string, v ...interface{}) {
 	if logToSlack {
 		message := fmt.Sprintf("```"+module+" ["+level+"] "+format+"```", v...)
-		channelID, timestamp, err := slackAPI.PostMessage("logs", message, slackParams)
+		channelID, timestamp, err := slackAPI.PostMessage("logs", slack.MsgOptionText(message, false), slack.MsgOptionAsUser(true), slack.MsgOptionUser(module))
 		if err != nil {
 			Log("logger", LogErr, "%s logger error: %s", module, err)
 		}
